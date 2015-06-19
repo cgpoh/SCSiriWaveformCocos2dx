@@ -1,0 +1,37 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "23.0.0 rc2"
+
+    defaultConfig {
+        applicationId "com.cis.SCSiriWaveformCocos2dx"
+        minSdkVersion 9
+        targetSdkVersion 9
+
+        ndk {
+            moduleName "cocos2dcpp_shared"
+        }
+        sourceSets.main {
+            jni.srcDirs = []  // <-- disable automatic ndk-build call
+        }
+
+        android {
+            packagingOptions {
+                exclude 'META-INF/LICENSE.txt'
+                exclude 'META-INF/NOTICE.txt'
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':libcocos2dx')
+}

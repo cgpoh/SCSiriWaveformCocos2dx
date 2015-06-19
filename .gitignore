@@ -1,0 +1,12 @@
+cocos2d/cocos/2d/platform/android/java/bin/
+cocos2d/cocos/platform/android/java/bin/
+cocos2d/cocos/2d/platform/android/java/gen/
+*.iml
+proj.android/bin/
+proj.android/gen/
+proj.android/libcocos2dx/build/
+proj.android/.idea/
+proj.android/.gradle/
+proj.android/build/
+proj.android/sCSiriWaveformCocos2dx/build/
+proj.android/sCSiriWaveformCocos2dx/src/main/obj/
