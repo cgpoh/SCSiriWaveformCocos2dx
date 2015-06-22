@@ -1,4 +1,5 @@
 #include "HelloWorldScene.h"
+#include "WaveNode.h"
 
 USING_NS_CC;
 
@@ -15,6 +16,16 @@ Scene* HelloWorld::createScene()
 
     // return the scene
     return scene;
+}
+
+HelloWorld::HelloWorld()
+	: m_pWaveNode(nullptr)
+{
+}
+
+HelloWorld::~HelloWorld()
+{
+	CC_SAFE_RELEASE(m_pWaveNode);
 }
 
 // on "init" you need to initialize your instance
@@ -47,35 +58,51 @@ bool HelloWorld::init()
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    
-    // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(sprite, 0);
-    
+   
     return true;
 }
 
+void HelloWorld::onEnter()
+{
+	createWave();
 
+	scheduleUpdate();
+
+	Layer::onEnter();
+}
+
+void HelloWorld::onExit()
+{
+	unscheduleUpdate();
+
+	Layer::onExit();
+}
+
+void HelloWorld::update(float delta)
+{
+	m_pWaveNode->update(delta);
+}
+
+void HelloWorld::draw(Renderer *renderer, const Mat4& transform, uint32_t flags)
+{
+	mCustomCommand.init(0);
+	mCustomCommand.func = CC_CALLBACK_0(HelloWorld::onDraw, this, transform, flags);
+	renderer->addCommand(&mCustomCommand);
+}
+
+void HelloWorld::onDraw(const Mat4& transform, uint32_t flags)
+{
+	m_pWaveNode->onDraw(transform, flags);
+}
+
+void HelloWorld::createWave()
+{
+	m_pWaveNode = new WaveNode();
+	m_pWaveNode->init();
+
+	addChild(m_pWaveNode, 2);
+}
+	
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
